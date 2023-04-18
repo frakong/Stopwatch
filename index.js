@@ -5,15 +5,20 @@ const pauseButton = document.querySelector("#pauseButton");
 const resetButton = document.querySelector("#resetButton");
 let isTimerPaused = true;
 let startTime;
-let elapsedTime; //Difference between currenTime and startTime in milliseconds.
+let elapsedTime = 0; //Difference between currenTime and startTime in milliseconds.
 let currentTime;
 let timerHours = 0, timerMinutes = 0, timerSeconds = 0;
 let currentTimerId;
 
 startButton.addEventListener("click", () => {
-  if (isTimerPaused){
+  if (isTimerPaused && elapsedTime == 0){
     isTimerPaused = false;
     startTime = Date.now();
+    currentTimerId = setInterval(updateTimer, 100);
+  } 
+  else if (isTimerPaused){
+    isTimerPaused = false;
+    startTime = Date.now() - elapsedTime;
     currentTimerId = setInterval(updateTimer, 100);
   }
 });
@@ -29,6 +34,7 @@ resetButton.addEventListener("click", () => {
     isTimerPaused = true;
   }
   
+  elapsedTime = 0;
   timer.innerHTML = "00:00:00";
 });
 
