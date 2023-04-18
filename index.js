@@ -26,19 +26,23 @@ pauseButton.addEventListener("click", () => {
 resetButton.addEventListener("click", () => {
   if (!isTimerPaused){
     clearInterval(currentTimerId);
+    isTimerPaused = true;
   }
-  timerHours = 0;
-  timerMinutes = 0;
-  timerSeconds = 0;
+  
   timer.innerHTML = "00:00:00";
 });
 
 function updateTimer(){
   currentTime = Date.now();
   elapsedTime = currentTime - startTime;
-  timerSeconds = Math.floor(elapsedTime / 1000) % 60;
-  timerMinutes = Math.floor(elapsedTime / 1000 / 60) % 60;
-  timerHours = Math.floor(elapsedTime / 1000 / 60 / 60);
+  timerSeconds = addLeadingZero(Math.floor(elapsedTime / 1000) % 60);
+  timerMinutes = addLeadingZero(Math.floor(elapsedTime / 1000 / 60) % 60);
+  timerHours = addLeadingZero(Math.floor(elapsedTime / 1000 / 60 / 60));
+
+  function addLeadingZero(timerUnit){
+    let timerUnitWithLeadingZero = "0" + timerUnit;
+    return ((timerUnitWithLeadingZero.length == 2) ? timerUnitWithLeadingZero : timerUnit);
+  }
 
   timer.innerHTML = `${timerHours}:${timerMinutes}:${timerSeconds}`;
 }
